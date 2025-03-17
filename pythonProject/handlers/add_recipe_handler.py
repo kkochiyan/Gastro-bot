@@ -3,9 +3,9 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 
 from states import AddRecipe as ar
-from bot.messages import ADD_NAME, ADD_DESCRIPTION, ADD_INGREDIENTS, ADD_STEPS, CHOOSE_CATEGORY, MAIN_MENU
+from bot.messages import ADD_NAME, ADD_DESCRIPTION, ADD_INGREDIENTS, ADD_STEPS, CHOOSE_CATEGORY, MAIN_MENU, ERROR_SMALL_COUNT_OF_SYMBOLS_STEPS
 from keybords import categories, main_menu
-from utils import category_defenition, process_recipe_step
+from utils import category_defenition, make_card_of_dish_by_data_from_user
 from database import add_recipe_to_database
 
 add_recipe_router = Router()
@@ -38,14 +38,17 @@ async def get_inredients(message: Message, state: FSMContext):
 @add_recipe_router.message(ar.ingredients)
 async def get_steps_of_cooking(message: Message, state: FSMContext):
     await state.update_data(ingredients=message.text)
-    await state.update_data(steps=[])
     await message.answer(ADD_STEPS)
     await state.set_state(ar.steps)
 
 @add_recipe_router.message(ar.steps)
-async def add_step(message: Message, state: FSMContext):
-    user_input = message.text.strip()
-    await process_recipe_step(message, state, user_input)
+async def add_steps(message: Message, state: FSMContext):
+    if len(message.text) > 5:
+        await state.update_data(steps=message.text.strip())
+        await make_card_of_dish_by_data_from_user(message, state)
+    else:
+        await message.answer(ERROR_SMALL_COUNT_OF_SYMBOLS_STEPS)
+
 
 @add_recipe_router.callback_query(F.data == 'dont_add_recipe')
 async def not_add_recipe(callback: CallbackQuery, state: FSMContext):
