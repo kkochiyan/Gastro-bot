@@ -1,5 +1,6 @@
-from .config import BOT_TOKEN
+from .config import BOT_TOKEN, AUTHORIZATION_KEYS, DEEPSEEK_API_KEY, FOLDER_ID, IAM_TOKEN_YANDEX
 from .config import ADMIN_ID
 from .config import SQLALCHEMY_URL
 
-__all__ = ['BOT_TOKEN', 'ADMIN_ID', 'SQLALCHEMY_URL']
+__all__ = ['BOT_TOKEN', 'ADMIN_ID', 'SQLALCHEMY_URL', 'AUTHORIZATION_KEYS', 'DEEPSEEK_API_KEY',
+           'FOLDER_ID', 'IAM_TOKEN_YANDEX']

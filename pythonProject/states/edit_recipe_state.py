@@ -1,5 +1,9 @@
 from aiogram.fsm.state import StatesGroup,State
 
 class EditRecipeState(StatesGroup):
-    waiting_for_new_value = State()
-    waiting_for_steps = State()
+    recipe_name = State()
+    recipe_description = State()
+    add_new_ing = State()
+    correct_ing = State()
+    add_new_step = State()
+    correct_step = State()
